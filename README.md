@@ -1,7 +1,7 @@
-## Thông tin cá nhân (Họ tên, mã sinh viên):
+## Thông tin cá nhân (Họ tên, mã sinh viên)
 - Nguyễn Ngọc Lân, 22635801
 - Nguyễn Tấn Minh, 22643511
-## Mô tả project (mô tả ý tưởng mà bạn dự định làm)
+## Mô tả project
 ### Ý tưởng xây dựng **Tiny To-Do List** bằng Flask  
 
 Tiny To-Do List là một ứng dụng web **đơn giản, nhẹ, dễ sử dụng** giúp người dùng quản lý danh sách công việc hàng ngày. Ứng dụng cho phép người dùng **thêm công việc, đánh dấu hoàn thành, xóa công việc**, và hiển thị danh sách công việc theo trạng thái. Ngoài ra, để mở rộng tính năng, ứng dụng sẽ có hệ thống **đăng nhập**, hỗ trợ nhiều **người dùng** với phân quyền **user và admin**, giúp mỗi người quản lý danh sách công việc riêng biệt.  
