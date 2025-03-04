@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Quản Lý User{% endblock %}
+{% block content %}
+    <h2>Quản Lý User</h2>
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên đăng nhập</th>
+                <th>Vai trò</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user['id'] }}</td>
+                    <td>{{ user['username'] }}</td>
+                    <td>{{ user['role'] }}</td>
+                    <td>
+                        <form action="{{ url_for('admin.toggle_role', id=user['id']) }}" method="post" style="display:inline;">
+                            <button type="submit" class="toggle-btn">
+                                {% if user['role'] == 'user' %}Nâng thành Admin{% else %}Hạ thành User{% endif %}
+                            </button>
+                        </form>
+                        <form action="{{ url_for('admin.delete_user', id=user['id']) }}" method="post" style="display:inline;">
+                            <button type="submit" class="delete-btn">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

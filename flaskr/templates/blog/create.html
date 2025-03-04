@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Thêm Công Việc{% endblock %}
+{% block content %}
+    <form method="post">
+        <h2>Thêm Công Việc</h2>
+        <div class="form-group">
+            <input type="text" name="title" placeholder=" " required>
+            <label>Tiêu đề</label>
+        </div>
+        <button type="submit">Thêm</button>
+    </form>
+{% endblock %}
