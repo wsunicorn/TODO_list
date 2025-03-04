@@ -34,7 +34,7 @@ Admin sẽ có một **bảng điều khiển (Dashboard)** để quản lý to�
 Người dùng có thể chỉnh sửa nội dung công việc nếu cần thay đổi hoặc cập nhật thông tin.  
 
 #### 5️⃣ **Lưu trữ dữ liệu**  
-Dữ liệu sẽ được lưu trong **SQLite** hoặc **PostgreSQL**, giúp người dùng truy cập công việc mọi lúc mọi nơi mà không bị mất dữ liệu.  
+Dữ liệu sẽ được lưu trong **SQLite**, giúp người dùng truy cập công việc mọi lúc mọi nơi mà không bị mất dữ liệu.  
 
 ---
 
