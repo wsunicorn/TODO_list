@@ -164,6 +164,12 @@ button:hover {
     border: none;
     color: white;
     cursor: pointer;
+    border-radius: 10px;
+}
+
+.text_user_list {
+    text-align: center; /* Căn giữa nội dung tiêu đề */
+    white-space: nowrap; /* Giữ nội dung trên một dòng */
 }
 
 .user-table {
@@ -187,10 +193,10 @@ button:hover {
     background: #6e8efb;
     padding: 8px 12px;
     border: none;
-    border-radius: 20px;
+    border-radius: 10px;
     color: white;
     cursor: pointer;
-    width: auto;
+    margin-left: 10px;
 }
 
 .toggle-btn:hover {
