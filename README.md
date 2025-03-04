@@ -54,6 +54,6 @@ Dữ liệu sẽ được lưu trong **SQLite** hoặc **PostgreSQL**, giúp ng�
 - **Hỗ trợ chế độ nhóm**: Người dùng có thể chia sẻ công việc với người khác.  
 
 Tiny To-Do List là một ứng dụng phù hợp cho cả cá nhân và nhóm nhỏ, giúp tối ưu hóa công việc hàng ngày theo cách đơn giản và hiệu quả. 🚀
-c.	Hướng dẫn cài đặt, chạy
-d.	Link project đã triển khai của bạn
+## Hướng dẫn cài đặt, chạy
+## Link project đã triển khai của bạn
 https://github.com/wsunicorn/flask-tiny-app
