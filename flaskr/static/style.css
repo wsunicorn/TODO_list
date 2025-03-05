@@ -92,18 +92,26 @@ h2 {
     text-align: center;
 }
 
+form {
+    display: flex;
+    flex-direction: column;  
+    justify-content: center;
+    /* align-items: center;      Căn giữa theo chiều ngang */
+}
+
 .form-group {
     margin-bottom: 20px;
     position: relative;
+    text-align: center;
 }
 
 .form-group input[type="email"],
 .form-group input[type="text"],
 .form-group input[type="password"] {
-    width: 100%;
+    width: 36%;
     padding: 12px 15px;
     border: 2px solid #ddd;
-    border-radius: 25px;
+    border-radius: 16px;
     font-size: 16px;
     outline: none;
     transition: border-color 0.3s ease;
@@ -133,15 +141,15 @@ h2 {
 }
 
 button {
-    /* width: 100%; */
     padding: 12px;
-    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    background: linear-gradient(135deg, var(--black), var(--dark));
     border: none;
     border-radius: 25px;
-    color: white;
+    color: var(--yellow);
     font-size: 16px;
     cursor: pointer;
     transition: transform 0.3s ease;
+    font-weight: 600;
 }
 
 button:hover {
