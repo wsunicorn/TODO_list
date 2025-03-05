@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Danh Sách Công Việc{% endblock %}
 {% block content %}
-    <h2>Danh Sách Công Việc</h2>
+    <h2>DANH SÁCH CÔNG VIỆC</h2>
     <a href="{{ url_for('blog.create') }}" class="add-btn">Thêm Công Việc</a>
     <ul class="todo-list">
         {% for todo in todos %}
@@ -9,7 +9,7 @@
                 <input type="checkbox" {% if todo['completed'] %}checked{% endif %} disabled>
                 <span>{{ todo['title'] }}</span>
                 <div>
-                    <a href="{{ url_for('blog.update', id=todo['id']) }}">Sửa</a>
+                    <button><a href="{{ url_for('blog.update', id=todo['id']) }}">Sửa</a></button>
                     <form action="{{ url_for('blog.delete', id=todo['id']) }}" method="post" style="display:inline;">
                         <button type="submit" class="delete-btn">Xóa</button>
                     </form>
