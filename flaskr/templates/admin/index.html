@@ -21,6 +21,11 @@
                         <form action="{{ url_for('admin.delete_user', id=user['id']) }}" method="post">
                             <button type="submit" class="delete-btn">Xóa</button>
                         </form>
+                        
+                        <form action="{{ url_for('admin.reset_password', id=user['id']) }}" method="post">
+                            <button type="submit" class="reset-btn">Reset Mật Khẩu</button>
+                        </form>
+                    
                         <div>
                             <p id="blockStatus-{{ user['id'] }}" 
                                style="padding: 10px 20px; border-radius: 10px; color: white; background-color: {% if user['blocked'] %}#fb1859{% else %}#4CAF50{% endif %};">

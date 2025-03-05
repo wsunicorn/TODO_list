@@ -75,3 +75,29 @@ def toggle_block(id):
     action = "bỏ chặn" if new_status == 0 else "chặn"
     flash(f'{user["username"]} đã bị {action}.')
     return redirect(url_for('admin.index'))
+
+from flask import request
+from werkzeug.security import generate_password_hash
+
+@bp.route('/reset_password/<int:id>', methods=['POST'])
+@admin_required
+def reset_password(id):
+    db = get_db()
+    user = db.execute('SELECT * FROM user WHERE id = ?', (id,)).fetchone()
+
+    if not user:
+        flash('Người dùng không tồn tại!')
+        return redirect(url_for('admin.index'))
+
+    if id == g.user['id']:
+        flash('Bạn không thể đặt lại mật khẩu của chính mình!')
+        return redirect(url_for('admin.index'))
+
+    new_password = '123456'  # Mật khẩu mặc định sau khi reset
+    hashed_password = generate_password_hash(new_password)
+
+    db.execute('UPDATE user SET password = ? WHERE id = ?', (hashed_password, id))
+    db.commit()
+
+    flash(f'Mật khẩu của {user["username"]} đã được đặt lại thành "123456".')
+    return redirect(url_for('admin.index'))
