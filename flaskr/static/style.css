@@ -1,3 +1,16 @@
+:root {
+    --cyan: #00ADB5; 
+    --light_cyan: #18e6e6;
+    --green: #00df64;
+    --black: #393E46;
+    --white: #EEEEEE;
+    --dark: #222831;
+    --yellow: #F9ED69;
+    --orange: #F08A5D;
+    --red: #fb1859;
+    --purple: #6A2C70;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -7,12 +20,12 @@
 
 body {
     min-height: 100vh;
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    background: linear-gradient(135deg, #fff8a8, #74eff6);
     padding: 20px;
 }
 
 nav {
-    background: white;
+    background: var(--dark);
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -20,24 +33,52 @@ nav {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    color: var(--white) ;
 }
 
 nav h1 {
-    color: #333;
+    color: var(--yellow);
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+nav div {
+    color: var(--white);
+    display: flex;
+    background-color: var(--yellow);
+    border-radius: 10px;
+    padding: 10px 10px;
+}
+
+nav div p {
+    margin-right: 10px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+nav div span {
+    color: var(--yellow);
+    font-weight: 1000;
+    color: var(--red);
 }
 
 nav a {
-    color: #6e8efb;
+    color: var(--white);
     text-decoration: none;
-    margin-left: 15px;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: var(--yellow);
+    color: var(--dark);
+    font-weight: 600;
+    padding: 10px 10px;
+    transition: transform 0.3s ease;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    transform: translateY(-2px);
 }
 
 .content {
-    max-width: 500px;
     margin: 0 auto;
     background: white;
     padding: 30px;
@@ -56,6 +97,7 @@ h2 {
     position: relative;
 }
 
+.form-group input[type="email"],
 .form-group input[type="text"],
 .form-group input[type="password"] {
     width: 100%;
@@ -91,7 +133,7 @@ h2 {
 }
 
 button {
-    width: 100%;
+    /* width: 100%; */
     padding: 12px;
     background: linear-gradient(135deg, #6e8efb, #a777e3);
     border: none;
@@ -148,8 +190,6 @@ button:hover {
 }
 
 .todo-item a, .delete-btn {
-    margin-left: 10px;
-    padding: 8px 12px;
     border-radius: 20px;
     text-decoration: none;
 }
@@ -160,11 +200,13 @@ button:hover {
 }
 
 .delete-btn {
-    background: #ff6b6b;
+    background: var(--cyan);
     border: none;
-    color: white;
+    color: #222831;
+    font-weight: 600;
     cursor: pointer;
     border-radius: 10px;
+    padding: 10px 60px;
 }
 
 .text_user_list {
@@ -176,29 +218,75 @@ button:hover {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .user-table th, .user-table td {
     padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+    text-align: center;
+    border: 1px solid #ddd;
 }
 
 .user-table th {
-    background: #f0f0f0;
-    color: #333;
+    background: var(--black);
+    color: var(--white);
 }
 
-.toggle-btn {
-    background: #6e8efb;
-    padding: 8px 12px;
+.user-table td > div {
+    display: flex;
+    flex-direction: row;  
+    justify-content: center;
+    margin-top: 3px;
+    align-items: center;      /* Căn giữa theo chiều ngang */
+    gap: 10px;                /* Khoảng cách giữa các phần tử */
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
     border: none;
-    border-radius: 10px;
-    color: white;
     cursor: pointer;
-    margin-left: 10px;
 }
 
-.toggle-btn:hover {
-    transform: translateY(-2px);
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--green);
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+/* Khi input được checked, đổi màu nền */
+input:checked + .slider {
+    background-color: #ed3b3b;
+}
+
+/* Khi input được checked, dịch nút tròn sang phải */
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+

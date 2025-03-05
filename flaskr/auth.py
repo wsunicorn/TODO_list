@@ -8,27 +8,42 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
+        email = request.form['email']
         username = request.form['username']
         password = request.form['password']
         db = get_db()
         error = None
 
-        if not username:
+        if not email:
+            error = 'Email is required.'
+        elif not username:
             error = 'Username is required.'
         elif not password:
             error = 'Password is required.'
 
         if error is None:
             try:
+                # Tìm ID nhỏ nhất chưa tồn tại, bỏ qua admin
+                missing_id = db.execute("""
+                    SELECT MIN(t1.id + 1) 
+                    FROM user t1 
+                    LEFT JOIN user t2 ON t1.id + 1 = t2.id 
+                    WHERE t2.id IS NULL AND t1.role = 'user'
+                """).fetchone()[0]
+
+                # Nếu chưa có user nào, bắt đầu từ 1
+                next_id = 1 if missing_id is None else missing_id
+
+                # Chèn user mới, đảm bảo admin không bị ảnh hưởng
                 db.execute(
-                    "INSERT INTO user (username, password, role) VALUES (?, ?, ?)",
-                    (username, generate_password_hash(password), 'user'),
+                    "INSERT INTO user (id, email, username, password, role) VALUES (?, ?, ?, ?, ?)",
+                    (next_id, email, username, generate_password_hash(password), 'user')
                 )
                 db.commit()
-            except db.IntegrityError:
-                error = f"User {username} is already registered."
-            else:
                 return redirect(url_for('auth.login'))
+
+            except db.IntegrityError:
+                error = f"Email {email} hoặc User {username} đã tồn tại."
 
         flash(error)
     return render_template('auth/register.html')
@@ -36,24 +51,26 @@ def register():
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        identifier = request.form['identifier']  # Nhận email hoặc username
         password = request.form['password']
         db = get_db()
         error = None
+
+        # Tìm user bằng email hoặc username
         user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username,)
+            'SELECT * FROM user WHERE email = ? OR username = ?', (identifier, identifier)
         ).fetchone()
 
         if user is None or not check_password_hash(user['password'], password):
-            error = 'Incorrect username or password.'
+            error = 'Sai email/tên đăng nhập hoặc mật khẩu.'
+        elif user['blocked']:  # Kiểm tra nếu tài khoản bị block
+            error = 'Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.'
 
         if error is None:
             session.clear()
             session['user_id'] = user['id']
             # Chuyển hướng theo vai trò
-            if user['role'] == 'admin':
-                return redirect(url_for('admin.index'))  # Sửa từ 'admin.admin' thành 'admin.index'
-            return redirect(url_for('index'))
+            return redirect(url_for('admin.index' if user['role'] == 'admin' else 'index'))
 
         flash(error)
     return render_template('auth/login.html')

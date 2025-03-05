@@ -20,7 +20,7 @@ def admin_required(view):
 @admin_required
 def index():
     db = get_db()
-    users = db.execute('SELECT * FROM user ORDER BY id').fetchall()
+    users = db.execute("SELECT * FROM user WHERE role != 'admin' ORDER BY id").fetchall()
     return render_template('admin/index.html', users=users)
 
 @bp.route('/delete/<int:id>', methods=['POST'])
@@ -51,4 +51,27 @@ def toggle_role(id):
     db.execute('UPDATE user SET role = ? WHERE id = ?', (new_role, id))
     db.commit()
     flash(f'Vai trò của {user["username"]} đã được thay đổi thành {new_role}.')
+    return redirect(url_for('admin.index'))
+
+@bp.route('/toggle_block/<int:id>', methods=['POST'])
+@admin_required
+def toggle_block(id):
+    db = get_db()
+    user = db.execute('SELECT * FROM user WHERE id = ?', (id,)).fetchone()
+
+    if not user:
+        flash('Người dùng không tồn tại!')
+        return redirect(url_for('admin.index'))
+
+    if id == g.user['id']:
+        flash('Bạn không thể block chính mình!')
+        return redirect(url_for('admin.index'))
+
+    # Đảo trạng thái block
+    new_status = 0 if user['blocked'] else 1
+    db.execute('UPDATE user SET blocked = ? WHERE id = ?', (new_status, id))
+    db.commit()
+
+    action = "bỏ chặn" if new_status == 0 else "chặn"
+    flash(f'{user["username"]} đã bị {action}.')
     return redirect(url_for('admin.index'))

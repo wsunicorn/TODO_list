@@ -10,7 +10,11 @@
     <nav>
         <h1>To-Do List</h1>
         {% if g.user %}
-            <span>{{ g.user['username'] }}</span>
+            <div>
+                <P>Người dùng:</P>
+                <span>{{ g.user['username'] }}</span>
+            </div>
+            
             {% if g.user['role'] == 'admin' %}
                 <a href="{{ url_for('admin.index') }}">Quản lý User</a>
             {% endif %}

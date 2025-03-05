@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 {% block title %}Quản Lý User{% endblock %}
 {% block content %}
-    <h2>Quản Lý User</h2>
+    <h2>QUẢN LÝ USER</h2>
     <table class="user-table">
         <thead>
             <tr class="test_user_list">
-                <th style="text-align: center;white-space: nowrap;">ID</th>
-                <th>Tên đăng nhập</th>
-                <th>Vai trò</th>
-                <th>Hành động</th>
+                <th style="width: 10%;">ID</th>
+                <th style="width: 30%;">Tên đăng nhập</th>
+                <th style="width: 30%;">Vai trò</th>
+                <th style="width: 30%;">Hành động</th>
             </tr>
         </thead>
         <tbody>
@@ -18,14 +18,45 @@
                     <td>{{ user['username'] }}</td>
                     <td>{{ user['role'] }}</td>
                     <td>
-                        <form action="{{ url_for('admin.toggle_role', id=user['id']) }}" method="post" style="display:inline;">
-                            <button type="submit" class="toggle-btn">
-                                {% if user['role'] == 'user' %}Nâng thành Admin{% else %}Hạ thành User{% endif %}
-                            </button>
-                        </form>
-                        <form action="{{ url_for('admin.delete_user', id=user['id']) }}" method="post" style="display:inline;">
+                        <form action="{{ url_for('admin.delete_user', id=user['id']) }}" method="post">
                             <button type="submit" class="delete-btn">Xóa</button>
                         </form>
+                        <div>
+                            <p id="blockStatus-{{ user['id'] }}" 
+                               style="padding: 10px 20px; border-radius: 10px; color: white; background-color: {% if user['blocked'] %}#fb1859{% else %}#4CAF50{% endif %};">
+                                {% if user['blocked'] %}Blocked{% else %}Active{% endif %}
+                            </p>
+                            <label class="switch">
+                                <input type="checkbox" class="toggleSwitch" data-user-id="{{ user['id'] }}" {% if user['blocked'] %}checked{% endif %}>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <script>
+                            document.querySelectorAll(".toggleSwitch").forEach(switchElement => {
+                                switchElement.addEventListener("change", function() {
+                                    let userId = this.getAttribute("data-user-id");
+                                    let isBlocked = this.checked ? 1 : 0;
+                        
+                                    fetch(`/admin/toggle_block/${userId}`, {
+                                        method: "POST",
+                                        headers: { "Content-Type": "application/json" }
+                                    })
+                                    .then(response => {
+                                        if (!response.ok) throw new Error("Có lỗi xảy ra");
+                                        return response.text();  // Trả về HTML thay vì JSON
+                                    })
+                                    .then(() => {
+                                        let statusElement = document.getElementById("blockStatus-" + userId);
+                                        statusElement.innerText = isBlocked ? "Blocked" : "Active";
+                                        statusElement.style.backgroundColor = isBlocked ? "#fb1859" : "#4CAF50";
+                                    })
+                                    .catch(error => {
+                                        alert("Lỗi: Không thể cập nhật trạng thái.");
+                                        this.checked = !this.checked; // Khôi phục trạng thái ban đầu nếu có lỗi
+                                    });
+                                });
+                            });
+                        </script>                        
                     </td>
                 </tr>
             {% endfor %}
