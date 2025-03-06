@@ -1,0 +1,349 @@
+:root {
+    --cyan: #00ADB5; 
+    --light_cyan: #18e6e6;
+    --green: #00df64;
+    --black: #393E46;
+    --white: #EEEEEE;
+    --dark: #222831;
+    --yellow: #F9ED69;
+    --orange: #F08A5D;
+    --red: #fb1859;
+    --purple: #6A2C70;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fff8a8, #74eff6);
+    padding: 20px;
+}
+
+nav {
+    background: var(--dark);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    color: var(--white);
+}
+
+nav h1 {
+    color: var(--yellow);
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+nav div {
+    color: var(--white);
+    display: flex;
+    background-color: var(--yellow);
+    border-radius: 10px;
+    padding: 10px 10px;
+}
+
+nav div p {
+    margin-right: 10px;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+nav div span {
+    color: var(--red);
+    font-weight: 1000;
+}
+
+nav a {
+    color: var(--white);
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 5px 10px;
+    background-color: var(--yellow);
+    color: var(--dark);
+    font-weight: 600;
+    padding: 10px 10px;
+    transition: transform 0.3s ease;
+}
+
+nav a:hover {
+    transform: translateY(-2px);
+}
+
+.content {
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    position: relative;
+    text-align: center;
+}
+
+.form-group input[type="email"],
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    width: 36%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 16px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #6e8efb;
+}
+
+.form-group label {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background: white;
+    padding: 0 5px;
+}
+
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 16px;
+    color: var(--cyan);
+    font-weight: 666;
+}
+
+button {
+    padding: 10px;
+    background: linear-gradient(135deg, var(--black), var(--dark));
+    border: none;
+    border-radius: 25px;
+    color: var(--yellow);
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    font-weight: 600;
+    margin: 6px;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+.flash {
+    padding: 10px;
+    background: #ffebeb;
+    color: #ff6b6b;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.add-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--orange), var(--yellow));
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    margin-bottom: 20px;
+}
+
+.todo-list {
+    list-style: none;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.todo-item.completed span {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.todo-item span {
+    flex: 1;
+    margin-right: 15px;
+}
+
+.todo-item a, .delete-btn {
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+.todo-item a {
+    color: var(--yellow);
+    padding: 10px 20px;
+}
+
+.todo-item button {
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.text_user_list {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.user-table th, .user-table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+.user-table th {
+    background: var(--black);
+    color: var(--white);
+}
+
+.user-table td > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 3px;
+    align-items: center;
+    gap: 10px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    border: none;
+    cursor: pointer;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--green);
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #ed3b3b;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.task-checkbox {
+    margin-right: 10px;
+    display: none; /* Ẩn checkbox ban đầu */
+}
+
+/* Thêm style cho deleteControls và deleteActions */
+#deleteControls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#deleteActions {
+    display: none;
+    margin-left: 10px;
+}
+
+#deleteSelectedBtn {
+    background: linear-gradient(135deg, var(--red), var(--orange));
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#deleteSelectedBtn:hover {
+    transform: translateY(-2px);
+}
+
+#cancelDeleteBtn {
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#cancelDeleteBtn:hover {
+    transform: translateY(-2px);
+}
+
+#confirmModal {
+    z-index: 1000;
+}
+
+#confirmModal .delete-btn {
+    background: linear-gradient(135deg, var(--red), var(--orange));
+}
+
+#confirmModal .add-btn {
+    background: linear-gradient(135deg, var(--green), var(--cyan));
+}
