@@ -59,7 +59,8 @@ Hãy cd đến thư mực bạn vừa clone và thực hiện các câu lệnh s
 - python -m venv myenv 
 - myenv\Scripts\Activate
 - pip install flask 
-- $env:FLASK_APP = flaskr
+- pip install flask-session
+- $env:FLASK_APP = "flaskr"
 - flask run 
 ## Link project đã triển khai của bạn
 https://github.com/wsunicorn/flask-tiny-app

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Giới Thiệu{% endblock %}
+
+{% block content %}
+    <div class="about-container">
+        <h1>Chào mừng đến với To-Do List App!</h1>
+        <p>Ứng dụng giúp bạn quản lý công việc một cách dễ dàng và hiệu quả.</p>
+        
+        <h2>TÍNH NĂNG CHÍNH</h2>
+        <p>📌 Thêm, chỉnh sửa và xóa công việc nhanh chóng.</p>
+        <p>✅ Đánh dấu công việc đã hoàn thành với animation mượt mà.</p>
+        <p>📊 Phân trang giúp quản lý danh sách công việc tốt hơn.</p>
+        <p>🔄 Khôi phục công việc đã hoàn thành về danh sách chính.</p>
+        <p>🎨 Giao diện đơn giản, dễ sử dụng và mượt mà.</p>
+
+        <a href="{{ url_for('auth.login') }}" class="start-btn">Bắt đầu ngay</a>
+    </div>
+{% endblock %}

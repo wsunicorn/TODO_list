@@ -70,7 +70,7 @@ def login():
             session.clear()
             session['user_id'] = user['id']
             # Chuyển hướng theo vai trò
-            return redirect(url_for('admin.index' if user['role'] == 'admin' else 'index'))
+            return redirect(url_for('admin.index' if user['role'] == 'admin' else 'blog.index'))  # 🔹 Đúng route
 
         flash(error)
     return render_template('auth/login.html')

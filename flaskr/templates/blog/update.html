@@ -4,13 +4,9 @@
     <form method="post">
         <h2>Cập Nhật Công Việc</h2>
         <div class="form-group">
-            <input type="text" value="{{ todo['title'] }}" disabled>
-            <label>Tiêu đề</label>
+            <label for="title">Tiêu đề</label>
+            <input type="text" id="title" name="title" value="{{ todo['title'] }}" class="form-control">
         </div>
-        <div class="form-group">
-            <input type="checkbox" name="completed" {% if todo['completed'] %}checked{% endif %}>
-            <label>Hoàn thành</label>
-        </div>
-        <button type="submit">Cập Nhật</button>
+        <button type="submit" class="btn btn-primary">Cập Nhật</button>
     </form>
 {% endblock %}
