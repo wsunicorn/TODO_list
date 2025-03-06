@@ -55,7 +55,7 @@ def create():
             (g.user['id'], title)
         )
         db.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for('blog.index'))
     return render_template('blog/create.html')
 
 @bp.route('/update/<int:id>', methods=('GET', 'POST'))
@@ -65,18 +65,19 @@ def update(id):
     todo = db.execute('SELECT * FROM todo WHERE id = ? AND user_id = ?', (id, g.user['id'])).fetchone()
 
     if todo is None:
-        return redirect(url_for('index'))
+        return redirect(url_for('blog.index'))  # Quay về trang To-Do List
 
     if request.method == 'POST':
-        completed = 1 if 'completed' in request.form else 0
+        title = request.form['title']  # Lấy dữ liệu từ form
         db.execute(
-            'UPDATE todo SET completed = ? WHERE id = ?',
-            (completed, id)
+            'UPDATE todo SET title = ? WHERE id = ?',
+            (title, id)
         )
         db.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for('blog.index'))  # Quay lại trang To-Do List
 
     return render_template('blog/update.html', todo=todo)
+
 
 @bp.route('/update_completed/<int:id>', methods=['POST'])
 @login_required
@@ -110,7 +111,7 @@ def delete(id):
     db = get_db()
     db.execute('DELETE FROM todo WHERE id = ? AND user_id = ?', (id, g.user['id']))
     db.commit()
-    return redirect(url_for('index'))
+    return redirect(url_for('blog.index'))
 
 @bp.route('/about')
 def about():

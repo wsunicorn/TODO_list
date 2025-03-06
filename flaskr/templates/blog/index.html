@@ -7,11 +7,11 @@
     <ul class="todo-list" id="todo-list">
         {% for todo in todos %}
             <li class="todo-item {% if todo['completed'] %}completed{% endif %}" id="todo-{{ todo['id'] }}">
-                <div>
+                <div class="checkbox">
                     <input type="checkbox" name="completed"
                         {% if todo['completed'] %}checked{% endif %}
                         onchange="toggleCompleted({{ todo['id'] }}, this.checked)">
-                    <label>Hoàn thành</label>
+                    <!-- <label>Hoàn thành</label> -->
                 </div>
                 <span>{{ todo['title'] }}</span>
                 <div>

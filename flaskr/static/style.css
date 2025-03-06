@@ -412,3 +412,7 @@ h3 {
     opacity: 1;  /* Hiện icon */
     left: -50px; /* Đẩy icon ra xa hơn */
 }
+
+.checkbox {
+    margin-right: 10px;
+}
