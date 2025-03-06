@@ -87,27 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Xử lý thêm 30 task tự động
-    function autoAddTasks() {
-        fetch('/auto_add_tasks', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.text().then(text => { throw new Error(text || "Có lỗi xảy ra"); });
-            }
-            return response.text();
-        })
-        .then(() => {
-            window.location.reload(); // Reload trang để hiển thị task mới
-        })
-        .catch(error => {
-            alert("Lỗi: " + error.message);
-        });
-    }
-
-    // Xử lý xóa những gì đã chọn
     function deleteSelected() {
         let selectedIds = Array.from(document.querySelectorAll('input.task-checkbox:checked'))
                               .map(cb => cb.value);
@@ -119,7 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#confirmModal .delete-btn').onclick = () => confirmDelete(selectedIds);
     }
 
-    // Xử lý xóa tất cả
     function deleteAll() {
         const allTasks = document.querySelectorAll('input.task-checkbox');
         if (allTasks.length === 0) {
@@ -142,9 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('deleteSelectedBtn')?.addEventListener('click', deleteSelected);
     document.getElementById('deleteAllBtn')?.addEventListener('click', deleteAll);
     document.getElementById('cancelDeleteBtn')?.addEventListener('click', hideCheckboxesAndButtons);
-
-    // Gắn sự kiện cho nút "Thêm công việc tự động"
-    document.getElementById('autoAddTasksBtn')?.addEventListener('click', autoAddTasks);
 
     // Gắn sự kiện cho nút Hủy trong modal
     document.querySelector('#confirmModal .add-btn')?.addEventListener('click', hideConfirmModal);
