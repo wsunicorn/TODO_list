@@ -1,118 +1,143 @@
 {% extends "base.html" %}
 {% block title %}Danh Sách Công Việc{% endblock %}
 {% block content %}
-    <h2>DANH SÁCH CÔNG VIỆC</h2>
-    <a href="{{ url_for('blog.create') }}" class="add-btn">Thêm Công Việc</a>
-    <h3>Công Việc Đang Thực Hiện</h3>
-    <ul class="todo-list" id="todo-list">
-        {% for todo in todos %}
-            <li class="todo-item {% if todo['completed'] %}completed{% endif %}" id="todo-{{ todo['id'] }}">
-                <div class="checkbox">
-                    <input type="checkbox" name="completed"
-                        {% if todo['completed'] %}checked{% endif %}
-                        onchange="toggleCompleted({{ todo['id'] }}, this.checked)">
-                    <!-- <label>Hoàn thành</label> -->
+    {% if g.user %}
+        <a href="{{ url_for('blog.create') }}" class="add-btn">Thêm Công Việc</a>
+        <button type="button" id="deleteMultipleBtn" class="delete-btn">Xóa Nhiều</button>
+        <h2>DANH SÁCH CÔNG VIỆC</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div id="deleteControls">
+                <div id="deleteActions" style="display: none;">
+                    <button type="button" id="cancelDeleteBtn" class="add-btn">Hủy Thao Tác</button>
+                    <button type="button" id="deleteAllBtn" class="delete-btn">Xóa Tất Cả</button>
+                    <button type="button" id="deleteSelectedBtn" class="delete-btn" style="display: none;">Xóa Những Gì Đã Chọn</button>
                 </div>
-                <span>{{ todo['title'] }}</span>
-                <div>
-                    <button><a href="{{ url_for('blog.update', id=todo['id']) }}">Sửa</a></button>
-                    <form action="{{ url_for('blog.delete', id=todo['id']) }}" method="post" style="display:inline;">
-                        <button type="submit" class="delete-btn">Xóa</button>
-                    </form>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-
-    <div class="pagination">
-        {% if page > 1 %}
-            <a href="{{ url_for('blog.index', page=page-1) }}" class="prev">Trước</a>
-        {% endif %}
-        <span>Trang {{ page }} / {{ total_pages }}</span>
-        {% if page < total_pages %}
-            <a href="{{ url_for('blog.index', page=page+1) }}" class="next">Tiếp</a>
-        {% endif %}
-    </div>
-
-    <div class="completed-todo">
-        <h3>Công Việc Đã Hoàn Thành</h3>
-        <ul class="completed-todo-list" id="completed-list">
-            {% for todo in completed_todos %}
-                <li class="todo-item completed" id="todo-{{ todo['id'] }}">
+            </div>
+        </div>
+        
+        <!-- Thông báo "Không có gì để xóa" -->
+        <div id="noTasksMessage" style="display: none; color: #ff6b6b; background: #ffebeb; padding: 10px; border-radius: 5px; margin-bottom: 10px;"></div>
+        
+        <ul class="todo-list" id="todo-list">
+            {% for todo in todos %}
+                <li class="todo-item {% if todo['completed'] %}completed{% endif %}" id="todo-{{ todo['id'] }}">
+                    <input type="checkbox" name="task_ids" value="{{ todo['id'] }}" class="task-checkbox">
+                    <div class="checkbox">
+                        <input type="checkbox" name="completed"
+                            {% if todo['completed'] %}checked{% endif %}
+                            onchange="toggleCompleted({{ todo['id'] }}, this.checked)">
+                        <!-- <label>Hoàn thành</label> -->
+                    </div>
                     <span>{{ todo['title'] }}</span>
-                    <button onclick="returnTask({{ todo['id'] }})" class="return-btn">Quay Lại</button>
+                    <div>
+                        <button><a href="{{ url_for('blog.update', id=todo['id']) }}">Sửa</a></button>
+                        <form action="{{ url_for('blog.delete', id=todo['id']) }}" method="post" style="display:inline;">
+                            <button type="submit" class="delete-btn">Xóa</button>
+                        </form>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
-    </div>
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('blog.index', page=page-1) }}" class="prev">Trước</a>
+            {% endif %}
+            <span>Trang {{ page }} / {{ total_pages }}</span>
+            {% if page < total_pages %}
+                <a href="{{ url_for('blog.index', page=page+1) }}" class="next">Tiếp</a>
+            {% endif %}
+        </div>
     
-    <script>
-        function toggleCompleted(todoId, isChecked) {
-            let item = document.getElementById(`todo-${todoId}`);
-            item.classList.add("fade-out");
-    
-            setTimeout(() => {
-                fetch(`/update_completed/${todoId}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ completed: isChecked }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    item.remove(); // Xóa khỏi danh sách chính
-                    
-                    if (data.completed) {
-                        let completedList = document.getElementById("completed-list");
+        <div class="completed-todo">
+            <h3>Công Việc Đã Hoàn Thành</h3>
+            <ul class="completed-todo-list" id="completed-list">
+                {% for todo in completed_todos %}
+                    <li class="todo-item completed" id="todo-{{ todo['id'] }}">
+                        <span>{{ todo['title'] }}</span>
+                        <button onclick="returnTask({{ todo['id'] }})" class="return-btn">Quay Lại</button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <script>
+            function toggleCompleted(todoId, isChecked) {
+                let item = document.getElementById(`todo-${todoId}`);
+                item.classList.add("fade-out");
+        
+                setTimeout(() => {
+                    fetch(`/update_completed/${todoId}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ completed: isChecked }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        item.remove(); // Xóa khỏi danh sách chính
+                        
+                        if (data.completed) {
+                            let completedList = document.getElementById("completed-list");
+                            let newItem = document.createElement("li");
+                            newItem.className = "todo-item completed fade-in";
+                            newItem.id = `todo-${todoId}`;
+                            newItem.innerHTML = `<span>${data.title}</span>
+                                                 <button onclick="returnTask(${todoId})" class="return-btn">Quay Lại</button>`;
+                            completedList.appendChild(newItem);
+                        }
+                    })
+                    .catch(error => console.error("Lỗi:", error));
+                }, 500); // Delay để animation chạy mượt
+            }
+        
+            function returnTask(todoId) {
+                let item = document.getElementById(`todo-${todoId}`);
+                item.classList.add("fade-out");
+        
+                setTimeout(() => {
+                    fetch(`/update_completed/${todoId}`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ completed: false }),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        item.remove(); // Xóa khỏi danh sách hoàn thành
+        
+                        let todoList = document.getElementById("todo-list");
                         let newItem = document.createElement("li");
-                        newItem.className = "todo-item completed fade-in";
+                        newItem.className = "todo-item fade-in";
                         newItem.id = `todo-${todoId}`;
-                        newItem.innerHTML = `<span>${data.title}</span>
-                                             <button onclick="returnTask(${todoId})" class="return-btn">Quay Lại</button>`;
-                        completedList.appendChild(newItem);
-                    }
-                })
-                .catch(error => console.error("Lỗi:", error));
-            }, 500); // Delay để animation chạy mượt
-        }
-    
-        function returnTask(todoId) {
-            let item = document.getElementById(`todo-${todoId}`);
-            item.classList.add("fade-out");
-    
-            setTimeout(() => {
-                fetch(`/update_completed/${todoId}`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ completed: false }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    item.remove(); // Xóa khỏi danh sách hoàn thành
-    
-                    let todoList = document.getElementById("todo-list");
-                    let newItem = document.createElement("li");
-                    newItem.className = "todo-item fade-in";
-                    newItem.id = `todo-${todoId}`;
-                    newItem.innerHTML = `
-                        <div>
-                            <input type="checkbox" name="completed" onchange="toggleCompleted(${todoId}, true)">
-                            <label>Hoàn thành</label>
-                        </div>
-                        <span>${data.title}</span>
-                        <div>
-                            <button><a href="/update/${todoId}">Sửa</a></button>
-                            <form action="/delete/${todoId}" method="post" style="display:inline;">
-                                <button type="submit" class="delete-btn">Xóa</button>
-                            </form>
-                        </div>`;
-                    todoList.prepend(newItem);
-                })
-                .catch(error => console.error("Lỗi:", error));
-            }, 500);
-        }
-    </script>    
+                        newItem.innerHTML = `
+                            <div>
+                                <input type="checkbox" name="completed" onchange="toggleCompleted(${todoId}, true)">
+                                <label>Hoàn thành</label>
+                            </div>
+                            <span>${data.title}</span>
+                            <div>
+                                <button><a href="/update/${todoId}">Sửa</a></button>
+                                <form action="/delete/${todoId}" method="post" style="display:inline;">
+                                    <button type="submit" class="delete-btn">Xóa</button>
+                                </form>
+                            </div>`;
+                        todoList.prepend(newItem);
+                    })
+                    .catch(error => console.error("Lỗi:", error));
+                }, 500);
+            }
+        </script>
+        <!-- Modal xác nhận -->
+        <div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);">
+            <div style="background: white; padding: 20px; border-radius: 10px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                <p id="confirmMessage">Bạn muốn thực hiện xóa những gì mình đã chọn?</p>
+                <button type="button" class="delete-btn">Đồng Ý</button>
+                <button type="button" class="add-btn" style="margin-left: 10px;">Hủy</button>
+            </div>
+        </div>
+    {% else %}
+        <p>Vui lòng <a href="{{ url_for('auth.login') }}">đăng nhập</a> để xem danh sách công việc.</p>
+    {% endif %}
 {% endblock %}

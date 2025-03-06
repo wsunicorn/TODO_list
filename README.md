@@ -56,8 +56,8 @@ Dữ liệu sẽ được lưu trong **SQLite**, giúp người dùng truy cập
 Tiny To-Do List là một ứng dụng phù hợp cho cả cá nhân và nhóm nhỏ, giúp tối ưu hóa công việc hàng ngày theo cách đơn giản và hiệu quả. 🚀
 ## Hướng dẫn cài đặt, chạy
 Hãy cd đến thư mực bạn vừa clone và thực hiện các câu lệnh sau để cài đặt và chạy ứng dụng:<br>
-- python -m venv myenv 
-- myenv\Scripts\Activate
+- python -m venv venv 
+- venv\Scripts\Activate
 - pip install flask 
 - pip install flask-session
 - $env:FLASK_APP = "flaskr"
