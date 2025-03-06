@@ -14,6 +14,9 @@
             </div>
         </div>
         
+        <!-- Thông báo "Không có gì để xóa" -->
+        <div id="noTasksMessage" style="display: none; color: #ff6b6b; background: #ffebeb; padding: 10px; border-radius: 5px; margin-bottom: 10px;"></div>
+        
         <ul class="todo-list">
             {% for todo in todos %}
                 <li class="todo-item {% if todo['completed'] %}completed{% endif %}">
@@ -30,7 +33,6 @@
             {% endfor %}
         </ul>
 
-        <!-- Modal xác nhận -->
         <div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);">
             <div style="background: white; padding: 20px; border-radius: 10px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
                 <p>Bạn muốn thực hiện xóa những gì mình đã chọn?</p>

@@ -1,12 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Ẩn checkbox và nút hành động ban đầu
     document.querySelectorAll('.task-checkbox').forEach(cb => {
         cb.style.display = 'none';
     });
     document.getElementById('deleteActions').style.display = 'none';
 
     function showCheckboxesAndButtons() {
-        document.getElementById('deleteMultipleBtn').style.display = 'none'; // Ẩn nút "Xóa Nhiều"
+        const taskCount = document.querySelectorAll('.todo-item').length;
+        if (taskCount === 0) {
+            document.getElementById('noTasksMessage').style.display = 'block';
+            document.getElementById('noTasksMessage').textContent = 'Không có gì để xóa';
+            return;
+        }
+        document.getElementById('deleteMultipleBtn').style.display = 'none';
         document.querySelectorAll('.task-checkbox').forEach(cb => {
             cb.style.display = 'inline';
         });
@@ -15,12 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function hideCheckboxesAndButtons() {
-        document.getElementById('deleteMultipleBtn').style.display = 'inline-block'; // Hiện lại nút "Xóa Nhiều"
+        document.getElementById('deleteMultipleBtn').style.display = 'inline-block';
         document.querySelectorAll('.task-checkbox').forEach(cb => {
             cb.style.display = 'none';
-            cb.checked = false; // Bỏ chọn tất cả checkbox
+            cb.checked = false;
         });
         document.getElementById('deleteActions').style.display = 'none';
+        document.getElementById('noTasksMessage').style.display = 'none';
     }
 
     function showDeleteSelectedButton() {
@@ -68,19 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Gắn sự kiện cho nút "Xóa Nhiều"
     document.getElementById('deleteMultipleBtn').addEventListener('click', showCheckboxesAndButtons);
-
-    // Gắn sự kiện cho checkbox
     document.querySelectorAll('.task-checkbox').forEach(cb => {
         cb.addEventListener('change', showDeleteSelectedButton);
     });
-
-    // Gắn sự kiện cho các nút trong deleteActions
     document.getElementById('deleteSelectedBtn')?.addEventListener('click', showConfirmModal);
     document.getElementById('cancelDeleteBtn')?.addEventListener('click', hideCheckboxesAndButtons);
-
-    // Gắn sự kiện cho các nút trong modal
     document.querySelector('#confirmModal .delete-btn')?.addEventListener('click', confirmDelete);
     document.querySelector('#confirmModal .add-btn')?.addEventListener('click', hideConfirmModal);
 });
