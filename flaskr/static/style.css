@@ -202,14 +202,33 @@ button:hover {
     text-decoration: none;
 }
 
-.todo-item a {
-    color: var(--yellow);
+.todo-item a.edit-btn {
+    display: inline-block;
     padding: 10px 20px;
+    background: linear-gradient(135deg, var(--cyan), var(--light_cyan));
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    margin-right: 10px; /* Thêm khoảng cách với nút Xóa */
+    transition: transform 0.3s ease;
 }
 
-.todo-item button {
+.todo-item a.edit-btn:hover {
+    transform: translateY(-2px);
+}
+
+.todo-item button.delete-btn {
     padding: 10px 20px;
+    background: linear-gradient(135deg, var(--red), var(--orange));
+    color: white;
+    border: none;
     border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.todo-item button.delete-btn:hover {
+    transform: translateY(-2px);
 }
 
 .text_user_list {
@@ -296,7 +315,7 @@ input:checked + .slider:before {
     display: none; /* Ẩn checkbox ban đầu */
 }
 
-/* Thêm style cho deleteControls và deleteActions */
+/* Style cho deleteControls và deleteActions */
 #deleteControls {
     display: flex;
     align-items: center;
@@ -305,7 +324,22 @@ input:checked + .slider:before {
 
 #deleteActions {
     display: none;
-    margin-left: 10px;
+    display: flex;
+    gap: 10px; /* Khoảng cách giữa các nút */
+}
+
+#deleteAllBtn {
+    background: linear-gradient(135deg, var(--red), var(--purple));
+    color: white;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#deleteAllBtn:hover {
+    transform: translateY(-2px);
 }
 
 #deleteSelectedBtn {

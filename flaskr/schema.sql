@@ -26,3 +26,16 @@ INSERT INTO user (id, email, username, password, role, blocked) VALUES (
   'admin', 
   0
 );
+
+
+INSERT INTO user (id, email, username, password, role, blocked) VALUES 
+(1, 'user1@example.com', 'user1', 'scrypt:32768:8:1$hashed_password_here', 'user', 0);
+
+INSERT INTO todo (user_id, title, completed) VALUES
+(1, 'Công việc 1', 0), (1, 'Công việc 2', 1), (1, 'Công việc 3', 0), (1, 'Công việc 4', 0),
+(1, 'Công việc 5', 1), (1, 'Công việc 6', 0), (1, 'Công việc 7', 0), (1, 'Công việc 8', 1),
+(1, 'Công việc 9', 0), (1, 'Công việc 10', 0), (1, 'Công việc 11', 0), (1, 'Công việc 12', 1),
+(1, 'Công việc 13', 0), (1, 'Công việc 14', 0), (1, 'Công việc 15', 1), (1, 'Công việc 16', 0),
+(1, 'Công việc 17', 0), (1, 'Công việc 18', 1), (1, 'Công việc 19', 0), (1, 'Công việc 20', 0),
+(1, 'Công việc 21', 0), (1, 'Công việc 22', 1), (1, 'Công việc 23', 0), (1, 'Công việc 24', 0),
+(1, 'Công việc 25', 1);

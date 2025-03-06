@@ -1,17 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Ẩn checkbox và nút hành động ban đầu
     document.querySelectorAll('.task-checkbox').forEach(cb => {
         cb.style.display = 'none';
     });
     document.getElementById('deleteActions').style.display = 'none';
 
+    const todoList = document.querySelector('.todo-list');
+    const noTasksMessage = document.getElementById('noTasksMessage');
+
+    function showTemporaryMessage(message) {
+        noTasksMessage.textContent = message;
+        noTasksMessage.style.display = 'block';
+        setTimeout(() => {
+            noTasksMessage.style.display = 'none';
+        }, 5000); // Ẩn sau 5 giây (5000ms)
+    }
+
     function showCheckboxesAndButtons() {
-        const taskCount = document.querySelectorAll('.todo-item').length;
-        if (taskCount === 0) {
-            document.getElementById('noTasksMessage').style.display = 'block';
-            document.getElementById('noTasksMessage').textContent = 'Không có gì để xóa';
-            return;
+        // Kiểm tra nếu không có task
+        if (todoList.children.length === 0) {
+            showTemporaryMessage('Không có gì để xóa.');
+            return; // Không làm gì thêm nếu danh sách trống
         }
-        document.getElementById('deleteMultipleBtn').style.display = 'none';
+
+        // Chỉ thực hiện nếu có task
+        document.getElementById('deleteMultipleBtn').style.display = 'none'; // Ẩn nút "Xóa Nhiều"
         document.querySelectorAll('.task-checkbox').forEach(cb => {
             cb.style.display = 'inline';
         });
@@ -20,13 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function hideCheckboxesAndButtons() {
-        document.getElementById('deleteMultipleBtn').style.display = 'inline-block';
+        document.getElementById('deleteMultipleBtn').style.display = 'inline-block'; // Hiện lại nút "Xóa Nhiều"
         document.querySelectorAll('.task-checkbox').forEach(cb => {
             cb.style.display = 'none';
-            cb.checked = false;
+            cb.checked = false; // Bỏ chọn tất cả checkbox
         });
         document.getElementById('deleteActions').style.display = 'none';
-        document.getElementById('noTasksMessage').style.display = 'none';
     }
 
     function showDeleteSelectedButton() {
@@ -34,7 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('deleteSelectedBtn').style.display = selected ? 'inline-block' : 'none';
     }
 
-    function showConfirmModal() {
+    function showConfirmModal(message) {
+        document.getElementById('confirmMessage').textContent = message;
         document.getElementById('confirmModal').style.display = 'block';
     }
 
@@ -42,18 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('confirmModal').style.display = 'none';
     }
 
-    function confirmDelete() {
-        let selectedIds = Array.from(document.querySelectorAll('input.task-checkbox:checked'))
-                              .map(cb => cb.value);
-        if (selectedIds.length === 0) {
-            alert("Vui lòng chọn ít nhất một task để xóa.");
-            return;
-        }
-
+    function confirmDelete(taskIds) {
         fetch('/delete_multiple', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ task_ids: selectedIds })
+            body: JSON.stringify({ task_ids: taskIds })
         })
         .then(response => {
             if (!response.ok) {
@@ -62,10 +68,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.text();
         })
         .then(() => {
-            selectedIds.forEach(id => {
-                let row = document.querySelector(`input[value="${id}"]`).closest('li');
-                row.remove();
-            });
+            if (taskIds === "all") {
+                window.location.reload(); // Reload trang để cập nhật toàn bộ
+            } else {
+                taskIds.forEach(id => {
+                    let row = document.querySelector(`input[value="${id}"]`).closest('li');
+                    if (row) row.remove();
+                });
+                if (todoList.children.length === 0) {
+                    showTemporaryMessage('Không có gì để xóa.');
+                }
+            }
             hideConfirmModal();
             hideCheckboxesAndButtons();
         })
@@ -74,12 +87,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Xử lý thêm 30 task tự động
+    function autoAddTasks() {
+        fetch('/auto_add_tasks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => { throw new Error(text || "Có lỗi xảy ra"); });
+            }
+            return response.text();
+        })
+        .then(() => {
+            window.location.reload(); // Reload trang để hiển thị task mới
+        })
+        .catch(error => {
+            alert("Lỗi: " + error.message);
+        });
+    }
+
+    // Xử lý xóa những gì đã chọn
+    function deleteSelected() {
+        let selectedIds = Array.from(document.querySelectorAll('input.task-checkbox:checked'))
+                              .map(cb => cb.value);
+        if (selectedIds.length === 0) {
+            alert("Vui lòng chọn ít nhất một task để xóa.");
+            return;
+        }
+        showConfirmModal("Bạn muốn thực hiện xóa những gì mình đã chọn?");
+        document.querySelector('#confirmModal .delete-btn').onclick = () => confirmDelete(selectedIds);
+    }
+
+    // Xử lý xóa tất cả
+    function deleteAll() {
+        const allTasks = document.querySelectorAll('input.task-checkbox');
+        if (allTasks.length === 0) {
+            alert("Không có task nào để xóa.");
+            return;
+        }
+        showConfirmModal("Bạn muốn xóa tất cả các task?");
+        document.querySelector('#confirmModal .delete-btn').onclick = () => confirmDelete("all");
+    }
+
+    // Gắn sự kiện cho nút "Xóa Nhiều"
     document.getElementById('deleteMultipleBtn').addEventListener('click', showCheckboxesAndButtons);
+
+    // Gắn sự kiện cho checkbox
     document.querySelectorAll('.task-checkbox').forEach(cb => {
         cb.addEventListener('change', showDeleteSelectedButton);
     });
-    document.getElementById('deleteSelectedBtn')?.addEventListener('click', showConfirmModal);
+
+    // Gắn sự kiện cho các nút trong deleteActions
+    document.getElementById('deleteSelectedBtn')?.addEventListener('click', deleteSelected);
+    document.getElementById('deleteAllBtn')?.addEventListener('click', deleteAll);
     document.getElementById('cancelDeleteBtn')?.addEventListener('click', hideCheckboxesAndButtons);
-    document.querySelector('#confirmModal .delete-btn')?.addEventListener('click', confirmDelete);
+
+    // Gắn sự kiện cho nút "Thêm công việc tự động"
+    document.getElementById('autoAddTasksBtn')?.addEventListener('click', autoAddTasks);
+
+    // Gắn sự kiện cho nút Hủy trong modal
     document.querySelector('#confirmModal .add-btn')?.addEventListener('click', hideConfirmModal);
 });

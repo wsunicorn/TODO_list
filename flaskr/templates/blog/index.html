@@ -4,12 +4,16 @@
     {% if g.user %}
         <h2>Danh Sách Công Việc</h2>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <a href="{{ url_for('blog.create') }}" class="add-btn">Thêm Công Việc</a>
+            <div style="display: flex; gap: 10px;">
+                <a href="{{ url_for('blog.create') }}" class="add-btn">Thêm Công Việc</a>
+                <button type="button" id="autoAddTasksBtn" class="add-btn">Thêm công việc tự động</button>
+            </div>
             <div id="deleteControls">
                 <button type="button" id="deleteMultipleBtn" class="delete-btn">Xóa Nhiều</button>
                 <div id="deleteActions" style="display: none;">
-                    <button type="button" id="deleteSelectedBtn" class="delete-btn">Xóa Những Gì Đã Chọn</button>
-                    <button type="button" id="cancelDeleteBtn" class="add-btn" style="margin-left: 10px;">Hủy Thao Tác</button>
+                    <button type="button" id="cancelDeleteBtn" class="add-btn">Hủy Thao Tác</button>
+                    <button type="button" id="deleteAllBtn" class="delete-btn">Xóa Tất Cả</button>
+                    <button type="button" id="deleteSelectedBtn" class="delete-btn" style="display: none;">Xóa Những Gì Đã Chọn</button>
                 </div>
             </div>
         </div>
@@ -24,7 +28,7 @@
                     <input type="checkbox" {% if todo['completed'] %}checked{% endif %} disabled>
                     <span>{{ todo['title'] }}</span>
                     <div>
-                        <a href="{{ url_for('blog.update', id=todo['id']) }}">Sửa</a>
+                        <a href="{{ url_for('blog.update', id=todo['id']) }}" class="edit-btn">Sửa</a>
                         <form action="{{ url_for('blog.delete', id=todo['id']) }}" method="post" style="display:inline;">
                             <button type="submit" class="delete-btn">Xóa</button>
                         </form>
@@ -33,9 +37,23 @@
             {% endfor %}
         </ul>
 
+        <!-- Thêm phân trang ở đây -->
+        {% if total_pages > 1 %}
+            <div style="margin-top: 20px; text-align: center;">
+                {% if page > 1 %}
+                    <a href="{{ url_for('blog.index', page=page-1) }}" class="add-btn">Trang trước</a>
+                {% endif %}
+                <span>Trang {{ page }} / {{ total_pages }}</span>
+                {% if page < total_pages %}
+                    <a href="{{ url_for('blog.index', page=page+1) }}" class="add-btn">Trang sau</a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <!-- Modal xác nhận -->
         <div id="confirmModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);">
             <div style="background: white; padding: 20px; border-radius: 10px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                <p>Bạn muốn thực hiện xóa những gì mình đã chọn?</p>
+                <p id="confirmMessage">Bạn muốn thực hiện xóa những gì mình đã chọn?</p>
                 <button type="button" class="delete-btn">Đồng Ý</button>
                 <button type="button" class="add-btn" style="margin-left: 10px;">Hủy</button>
             </div>
