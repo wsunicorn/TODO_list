@@ -7,6 +7,10 @@ from flask import jsonify
 bp = Blueprint('blog', __name__)
 
 @bp.route('/')
+def home():
+    return redirect(url_for('blog.about'))  # Chuyển hướng về trang About
+
+@bp.route('/tasks')
 @login_required
 def index():
     db = get_db()
@@ -107,3 +111,8 @@ def delete(id):
     db.execute('DELETE FROM todo WHERE id = ? AND user_id = ?', (id, g.user['id']))
     db.commit()
     return redirect(url_for('index'))
+
+@bp.route('/about')
+def about():
+    return render_template('/blog/about.html')
+

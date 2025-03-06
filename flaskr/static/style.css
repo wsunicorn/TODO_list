@@ -1,5 +1,5 @@
 :root {
-    --cyan: #00ADB5; 
+    --cyan: #00ADB5;
     --light_cyan: #18e6e6;
     --green: #00df64;
     --black: #393E46;
@@ -33,7 +33,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    color: var(--white) ;
+    color: var(--white);
 }
 
 nav h1 {
@@ -87,14 +87,15 @@ nav a:hover {
 }
 
 h2 {
-    color: #333;
+    /* color: #333; */
+    margin-top: 16px;
     margin-bottom: 20px;
     text-align: center;
 }
 
 form {
     display: flex;
-    flex-direction: column;  
+    flex-direction: column;
     justify-content: center;
     /* align-items: center;      Căn giữa theo chiều ngang */
 }
@@ -133,8 +134,8 @@ form {
     padding: 0 5px;
 }
 
-.form-group input:focus + label,
-.form-group input:not(:placeholder-shown) + label {
+.form-group input:focus+label,
+.form-group input:not(:placeholder-shown)+label {
     top: 0;
     font-size: 16px;
     color: var(--cyan);
@@ -200,7 +201,8 @@ button:hover {
     margin-right: 15px;
 }
 
-.todo-item a, .delete-btn {
+.todo-item a,
+.delete-btn {
     border-radius: 10px;
     text-decoration: none;
 }
@@ -216,8 +218,10 @@ button:hover {
 }
 
 .text_user_list {
-    text-align: center; /* Căn giữa nội dung tiêu đề */
-    white-space: nowrap; /* Giữ nội dung trên một dòng */
+    text-align: center;
+    /* Căn giữa nội dung tiêu đề */
+    white-space: nowrap;
+    /* Giữ nội dung trên một dòng */
 }
 
 .user-table {
@@ -227,7 +231,8 @@ button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.user-table th, .user-table td {
+.user-table th,
+.user-table td {
     padding: 12px;
     text-align: center;
     border: 1px solid #ddd;
@@ -238,13 +243,15 @@ button:hover {
     color: var(--white);
 }
 
-.user-table td > div {
+.user-table td>div {
     display: flex;
-    flex-direction: row;  
+    flex-direction: row;
     justify-content: center;
     margin-top: 3px;
-    align-items: center;      /* Căn giữa theo chiều ngang */
-    gap: 10px;                /* Khoảng cách giữa các phần tử */
+    align-items: center;
+    /* Căn giữa theo chiều ngang */
+    gap: 10px;
+    /* Khoảng cách giữa các phần tử */
 }
 
 .switch {
@@ -287,16 +294,17 @@ button:hover {
 }
 
 /* Khi input được checked, đổi màu nền */
-input:checked + .slider {
+input:checked+.slider {
     background-color: #ed3b3b;
 }
 
 /* Khi input được checked, dịch nút tròn sang phải */
-input:checked + .slider:before {
+input:checked+.slider:before {
     transform: translateX(26px);
 }
 
-.prev, .next{
+.prev,
+.next {
     margin-top: 10px;
     background-color: var(--black);
     color: var(--yellow);
@@ -331,6 +339,7 @@ input:checked + .slider:before {
         opacity: 0;
         transform: translateX(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -343,4 +352,63 @@ input:checked + .slider:before {
 
 h3 {
     margin-bottom: 16px;
+}
+
+.about-container {
+    text-align: center;
+    max-width: 600px;
+    margin: 50px auto;
+    background: var(--dark);
+    color: var(--yellow);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.start-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: var(--black);
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.start-btn:hover {
+    background: var(--red);
+}
+
+.about-link {
+    position: relative;
+    color: var(--yellow);
+    text-decoration: none;
+    font-weight: 900;
+    font-family: 'Proza Libre', sans-serif;
+    background-color: var(--dark);
+    text-shadow: 3px 3px 3px var(--red);
+    padding: 5px 10px;
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.about-link .todo-icon {
+    position: absolute;
+    left: -40px;  /* Vị trí ban đầu */
+    opacity: 0;   /* Ban đầu ẩn */
+    font-size: 1.5em;
+    color: var(--yellow);
+    transition: opacity 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.about-link:hover {
+    transform: translateX(33px); /* Dịch chữ sang phải */
+}
+
+.about-link:hover .todo-icon {
+    opacity: 1;  /* Hiện icon */
+    left: -50px; /* Đẩy icon ra xa hơn */
 }
