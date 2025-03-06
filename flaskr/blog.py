@@ -76,3 +76,6 @@ def delete_multiple():
     except Exception as e:
         db.rollback()
         return f'Lỗi: {str(e)}', 500
+    
+
+    #commit cau 7
