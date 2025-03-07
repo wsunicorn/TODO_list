@@ -37,22 +37,6 @@ def delete_user(id):
     flash('User đã được xóa thành công.')
     return redirect(url_for('admin.index'))
 
-@bp.route('/toggle_role/<int:id>', methods=['POST'])
-@admin_required
-def toggle_role(id):
-    db = get_db()
-    user = db.execute('SELECT * FROM user WHERE id = ?', (id,)).fetchone()
-    
-    if id == g.user['id']:
-        flash('Bạn không thể thay đổi vai trò của chính mình!')
-        return redirect(url_for('admin.index'))
-    
-    new_role = 'admin' if user['role'] == 'user' else 'user'
-    db.execute('UPDATE user SET role = ? WHERE id = ?', (new_role, id))
-    db.commit()
-    flash(f'Vai trò của {user["username"]} đã được thay đổi thành {new_role}.')
-    return redirect(url_for('admin.index'))
-
 @bp.route('/toggle_block/<int:id>', methods=['POST'])
 @admin_required
 def toggle_block(id):

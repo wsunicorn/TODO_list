@@ -44,8 +44,10 @@
                         
                                     fetch(`/admin/toggle_block/${userId}`, {
                                         method: "POST",
-                                        headers: { "Content-Type": "application/json" }
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({})  // Gửi request body rỗng để Flask có thể nhận request đúng
                                     })
+
                                     .then(response => {
                                         if (!response.ok) throw new Error("Có lỗi xảy ra");
                                         return response.text();  // Trả về HTML thay vì JSON
